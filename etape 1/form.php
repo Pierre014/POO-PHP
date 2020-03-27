@@ -24,7 +24,8 @@
 
         public function input($type,$name){
             return $this->surround(
-                '<input type="'.$type.'" name="' . $name .'" value ="' . $this->getValue($name) .'">'
+                '<label for="'.$name.'">'.$name.'</label> '.
+                '<input type="'.$type.'" name="' . $name .'" value ="' . $this->getValue($name) .'"><br>'
             );
         }
 
