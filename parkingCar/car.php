@@ -55,7 +55,14 @@ define('COUNTRY','country');
         }
 
         public function display(){
-            return $this->catalog();
+            $data = $this->catalog();
+
+          
+            foreach($data as $dat){
+                echo "<td>$dat</td>";
+            }
+        
+
         }
         
         private function country(){
