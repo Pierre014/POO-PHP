@@ -30,7 +30,8 @@ define('COUNTRY','country');
             );
             $use = $this->used();
             $country = $this->country();
-            return array_merge($data,$use,$country);
+            $utility = $this->utility();
+            return array_merge($data,$use,$country,$utility);
         }
         public function rouler(){
             return $this->kilometer +=100000;
@@ -69,5 +70,9 @@ define('COUNTRY','country');
             }else{
                 return array(COUNTRY=>"Inconnu");
             }
+        }
+
+        private function utility(){
+            return $this->mass <=3.5 ? array('typework'=>'commercial') : array('typework'=>'utility');
         }
     }
