@@ -1,6 +1,6 @@
 <?php
     require 'class.php';
-    $pdo = connect::bdd();
+    $pdo = Connect::bdd();
 
     $post = new Post();
 
