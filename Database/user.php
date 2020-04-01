@@ -46,19 +46,40 @@
                     session_start();
                     $_SESSION['id'] = $info['id'];
                     $_SESSION['pseudo'] = $info['username'];
-                    echo "Welcome ".$_SESSION['pseudo']."<br>";
-                    echo "<a href= disconnect.php>logout</a><br>";
-                    echo "<a href= update.php>update</a><br>";
-                    echo "<a href= delete.php>delete</a><br>";
                     $stmt = $pdo -> prepare("UPDATE users SET connected = :connected WHERE username = :username");
                     $stmt -> execute(array(
                         ":connected" => "yes",
                         ":username" => $info['username']
                     ));
+                    header('location:index.php');
                 }else{
                     echo 'failed to start session :/';
                 }
             }
+            }
+        }
+        public function update($pdo,$submit){
+
+            if(isset($this->data[$submit])){
+                session_start();
+                //recupération de l'id utilisateur
+                $user = $_SESSION['pseudo'];
+                echo $user;
+                $nameOrEmail = $this->data['choose'];
+                $id = $pdo-> prepare("SELECT id FROM users WHERE username = :username");
+                $id->execute(array(
+                    ":username" => $user
+                ));
+                $userId = $id->fetch(PDO::FETCH_ASSOC);
+                $stmt= $pdo->prepare("UPDATE users 
+                                        SET $nameOrEmail = :$nameOrEmail WHERE id = :id");
+                $req = $stmt -> execute(array(
+                    ":$nameOrEmail" => $this->data['nameOrEmail'],
+                    ":id" => $userId['id']
+                ));
+                $_SESSION['pseudo'] = $this->data['nameOrEmail'];
+                
+                header('location:index.php');
             }
         }
 
@@ -73,18 +94,4 @@
                 session_destroy();
                 echo 'deco';
             }
-            
-        public function update($pdo,$submit){
-            if(isset($this->data[$submit])){
-            session_start();
-            $nameOrEmail = $this->data['nameOrEmail'];
-            $stmt= $pdo->prepare("UPDATE users SET $nameOrEmail = :$nameOrEmail WHERE username = :username");
-
-            $stmt -> execute(array(
-                ":$nameOrEmail" => $nameOrEmail,
-                ":username" => $_SESSION['pseudo']
-            ));
-            header('location:index.php');
-            }
-        }
     }
