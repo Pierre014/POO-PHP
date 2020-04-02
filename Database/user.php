@@ -7,6 +7,9 @@
             $this->data = $data;
         }
 
+        private function goIndex(){
+            return header("location:index.php");
+        }
         public function setUser($submit,$pdo){
             if(isset($this->data[$submit]) && (!in_array("",$this->data))){
                 
@@ -51,7 +54,7 @@
                         ":connected" => "yes",
                         ":username" => $info['username']
                     ));
-                    header('location:index.php');
+                    $this->goIndex();
                 }else{
                     echo 'failed to start session :/';
                 }
@@ -73,13 +76,13 @@
                 $userId = $id->fetch(PDO::FETCH_ASSOC);
                 $stmt= $pdo->prepare("UPDATE users 
                                         SET $nameOrEmail = :$nameOrEmail WHERE id = :id");
-                $req = $stmt -> execute(array(
+                $stmt -> execute(array(
                     ":$nameOrEmail" => $this->data['nameOrEmail'],
                     ":id" => $userId['id']
                 ));
                 $_SESSION['pseudo'] = $this->data['nameOrEmail'];
                 
-                header('location:index.php');
+                $this->goIndex();
             }
         }
 
@@ -94,4 +97,18 @@
                 session_destroy();
                 echo 'deco';
             }
+        
+        public function deleteMember($submit,$pdo){
+            if(isset($this->data[$submit])){
+                session_start();
+                if($this->data['sure'] == "yes"){
+                    $stmt = $pdo -> prepare("DELETE FROM users WHERE username = :username");
+                    $stmt -> execute(array(
+                        ":username" => $_SESSION['pseudo']
+                    ));
+                }else{
+                    $this->goIndex();
+                }
+            }
+        }
     }
