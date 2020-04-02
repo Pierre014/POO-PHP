@@ -1,7 +1,6 @@
 <?php
     require 'connect.php';
     require 'user.php';
-    
     $pdo = Connect::bdd();
     $user = new User($_POST);
     $user->sessionStart($pdo);
@@ -17,6 +16,10 @@
 </head>
 <body>
     <form action="update.php" method="post">
+        <label for="email"> email</label>
+        <input type="radio" name= "choose" id="email" value="email">
+        <label for="name"> name</label>
+        <input type="radio" name= "choose" id ="email" value="username"><br>
         <label for="nameOrEmail">put your new name or new email</label>
         <input type="text" id="nameOrEmail" name="nameOrEmail"><br>
         <input type="submit" name="update" id="update" value="update">

@@ -4,17 +4,22 @@
 
     $pdo = Connect::bdd();
     $user = new user($_POST);
-    $user->sessionStart($pdo);
     $user->setUser('submit',$pdo);
-    
+    session_start();
+    if(isset($_SESSION['pseudo'])){
+        echo "Welcome ".$_SESSION['pseudo']."<br>";
+        echo "<a href= disconnect.php>logout</a><br>";
+        echo "<a href= update.php>update</a><br>";
+        echo "<a href= delete.php>delete</a><br>";
+    }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="widt
-    h=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>USERS</title>
 </head>
 <body>
@@ -37,17 +42,7 @@
         <input type="submit" name="submit" id="submit" value="submit">
     </form>
 
-    <h3>dejà inscrit? connecte-toi</h3>
-
-        <form action="#" method="post">
-            <label for="pseudo">pseudo: </label>
-            <input type="text" id="pseudo" name='pseudo'><br>
-
-            <label for="pass">password: </label>
-            <input type="password" id="pass" name="pass"><br>
-
-            <input type="submit" name="login" id="login" value="login">
-        </form>
+    <h3>dejà inscrit? connecte-toi <a href="connexion.php">ici</a></h3>
         
 </body>
 </html>
